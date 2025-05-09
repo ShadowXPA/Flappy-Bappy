@@ -1,0 +1,149 @@
+[gd_scene load_steps=14 format=3 uid="uid://bnysc6ui4lexs"]
+
+[ext_resource type="Script" uid="uid://53cdcoy5313v" path="res://scripts/GameManager.cs" id="1_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://5md0f4biemlx" path="res://scenes/bappy.tscn" id="1_uwrxv"]
+[ext_resource type="AudioStream" uid="uid://cpckaahxa7ddj" path="res://assets/game.mp3" id="2_iywne"]
+[ext_resource type="PackedScene" uid="uid://d13ylmv2s3gqh" path="res://scenes/killzone.tscn" id="3_lnu2h"]
+[ext_resource type="AudioStream" uid="uid://bydgvyee06psm" path="res://assets/checkpoint.mp3" id="3_p57ef"]
+[ext_resource type="AudioStream" uid="uid://b83nt1pgj8e4m" path="res://assets/gameover.mp3" id="4_u5sy4"]
+[ext_resource type="Script" uid="uid://dswon18yisvju" path="res://scripts/PipeSpawner.cs" id="5_iywne"]
+[ext_resource type="PackedScene" uid="uid://bakv4lji2n556" path="res://scenes/game_over.tscn" id="9_0tnpc"]
+[ext_resource type="Texture2D" uid="uid://b7mlxyjo6c4pm" path="res://assets/cloud.svg" id="9_vtaks"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_lbhrr"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_iywne"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vtaks"]
+emission_shape_offset = Vector3(800, 350, 0)
+emission_shape_scale = Vector3(1, 50, 1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(-1, 0, 0)
+spread = 0.0
+initial_velocity_min = 195.0
+initial_velocity_max = 215.0
+gravity = Vector3(0, 0, 0)
+scale_min = 3.0
+scale_max = 5.0
+hue_variation_min = 0.6
+hue_variation_max = 0.6
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0tnpc"]
+emission_shape_offset = Vector3(800, 0, 0)
+emission_shape = 3
+emission_box_extents = Vector3(1, 800, 1)
+direction = Vector3(-1, 0, 0)
+spread = 0.0
+initial_velocity_min = 50.0
+initial_velocity_max = 320.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+scale_max = 2.5
+
+[node name="Game" type="Node2D"]
+
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("UI", "Audio", "GameOverScreen")]
+script = ExtResource("1_lbhrr")
+UI = NodePath("../UI")
+Audio = NodePath("../Audio")
+GameOverScreen = NodePath("../GameOver")
+
+[node name="Bappy" parent="." node_paths=PackedStringArray("GameManager") instance=ExtResource("1_uwrxv")]
+GameManager = NodePath("../GameManager")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="GameMusic" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("2_iywne")
+autoplay = true
+bus = &"Music"
+parameters/looping = true
+
+[node name="CheckpointSFX" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("3_p57ef")
+bus = &"SFX"
+
+[node name="GameOverMusic" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("4_u5sy4")
+parameters/looping = true
+
+[node name="UI" type="Control" parent="."]
+z_index = 1000
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -550.0
+offset_top = -310.0
+offset_right = -550.0
+offset_bottom = -310.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Score" type="Label" parent="UI"]
+layout_mode = 2
+offset_right = 34.0
+offset_bottom = 83.0
+theme_override_font_sizes/font_size = 60
+text = "0"
+
+[node name="Highscore" type="Label" parent="UI"]
+layout_mode = 0
+offset_top = 83.0
+offset_right = 130.0
+offset_bottom = 114.0
+theme_override_font_sizes/font_size = 22
+text = "Highscore: 0"
+
+[node name="Killzone" parent="." node_paths=PackedStringArray("GameManager") instance=ExtResource("3_lnu2h")]
+GameManager = NodePath("../GameManager")
+
+[node name="Top" type="CollisionShape2D" parent="Killzone"]
+position = Vector2(0, -330)
+rotation = -3.14159
+shape = SubResource("WorldBoundaryShape2D_lbhrr")
+
+[node name="Bottom" type="CollisionShape2D" parent="Killzone"]
+position = Vector2(0, 330)
+shape = SubResource("WorldBoundaryShape2D_iywne")
+
+[node name="PipeSpawner" type="Node2D" parent="." node_paths=PackedStringArray("GameManager")]
+position = Vector2(750, 0)
+script = ExtResource("5_iywne")
+KillZone = -1500.0
+GameManager = NodePath("../GameManager")
+
+[node name="Timer" type="Timer" parent="PipeSpawner"]
+wait_time = 2.0
+
+[node name="Sky" type="ColorRect" parent="."]
+z_index = -1000
+offset_left = -657.0
+offset_top = -378.0
+offset_right = 659.0
+offset_bottom = 379.0
+color = Color(0.117647, 0.419608, 1, 1)
+
+[node name="Trees" type="GPUParticles2D" parent="."]
+amount = 5
+texture = ExtResource("9_vtaks")
+lifetime = 10.0
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_vtaks")
+
+[node name="Clouds" type="GPUParticles2D" parent="."]
+texture = ExtResource("9_vtaks")
+lifetime = 30.0
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_0tnpc")
+
+[node name="GameOver" parent="." instance=ExtResource("9_0tnpc")]
+visible = false
+z_index = 1050
+offset_left = -273.5
+offset_top = -173.0
+offset_right = 273.5
+offset_bottom = 173.0

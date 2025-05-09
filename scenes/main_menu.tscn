@@ -1,0 +1,103 @@
+[gd_scene load_steps=6 format=3 uid="uid://cf4c8awoq80x8"]
+
+[ext_resource type="Script" uid="uid://cy8p3iqb3bqam" path="res://scripts/MainMenuManager.cs" id="1_bqqt6"]
+[ext_resource type="AudioStream" uid="uid://davev1x2ccu5q" path="res://assets/mainmenu.mp3" id="1_l6cm7"]
+[ext_resource type="Texture2D" uid="uid://b7mlxyjo6c4pm" path="res://assets/cloud.svg" id="3_wu84c"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wu84c"]
+emission_shape_offset = Vector3(800, 350, 0)
+emission_shape_scale = Vector3(1, 50, 1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(-1, 0, 0)
+spread = 0.0
+initial_velocity_min = 195.0
+initial_velocity_max = 215.0
+gravity = Vector3(0, 0, 0)
+scale_min = 3.0
+scale_max = 5.0
+hue_variation_min = 0.6
+hue_variation_max = 0.6
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bqqt6"]
+emission_shape_offset = Vector3(800, 0, 0)
+emission_shape = 3
+emission_box_extents = Vector3(1, 650, 1)
+angle_min = -22.0
+angle_max = 22.0
+direction = Vector3(-1, 0, 0)
+spread = 0.0
+initial_velocity_min = 50.0
+initial_velocity_max = 320.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+scale_max = 2.5
+
+[node name="MainMenu" type="Node2D"]
+
+[node name="MainMenuManager" type="Node" parent="." node_paths=PackedStringArray("UI")]
+script = ExtResource("1_bqqt6")
+UI = NodePath("../UI")
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="MainMenuMusic" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("1_l6cm7")
+autoplay = true
+parameters/looping = true
+
+[node name="Sky" type="ColorRect" parent="."]
+z_index = -1000
+offset_left = -657.0
+offset_top = -378.0
+offset_right = 659.0
+offset_bottom = 379.0
+color = Color(0.117647, 0.419608, 1, 1)
+
+[node name="Trees" type="GPUParticles2D" parent="."]
+amount = 5
+texture = ExtResource("3_wu84c")
+lifetime = 10.0
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_wu84c")
+
+[node name="Clouds" type="GPUParticles2D" parent="."]
+texture = ExtResource("3_wu84c")
+lifetime = 30.0
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_bqqt6")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="UI" type="VBoxContainer" parent="."]
+z_index = 1000
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -576.0
+offset_top = -324.0
+offset_right = 576.0
+offset_bottom = 324.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Title" type="Label" parent="UI"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 96
+text = "Flappy Bappy"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Play" type="Button" parent="UI"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 50
+text = "Play"
+
+[node name="Quit" type="Button" parent="UI"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 50
+text = "Quit"

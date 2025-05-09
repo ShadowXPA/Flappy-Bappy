@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=3 uid="uid://ccxnmdqsn6r0v"]
+
+[ext_resource type="Script" uid="uid://bqpk2ukymqgp" path="res://scripts/Pipes.cs" id="1_arpqm"]
+[ext_resource type="Texture2D" uid="uid://in7bd3kba7de" path="res://assets/pipe.svg" id="2_c66uf"]
+[ext_resource type="PackedScene" uid="uid://d13ylmv2s3gqh" path="res://scenes/killzone.tscn" id="3_8p0di"]
+[ext_resource type="PackedScene" uid="uid://j6bec6nt3p48" path="res://scenes/pointzone.tscn" id="4_ejsh2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8x3ej"]
+size = Vector2(80, 595)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_8p0di"]
+a = Vector2(0, -102.5)
+b = Vector2(0, 102.5)
+
+[node name="Pipes" type="Node2D"]
+z_index = 20
+script = ExtResource("1_arpqm")
+
+[node name="TopPipe" type="Node2D" parent="."]
+position = Vector2(0, -400)
+
+[node name="Bottom" type="Sprite2D" parent="TopPipe"]
+position = Vector2(0, 150)
+texture = ExtResource("2_c66uf")
+flip_v = true
+
+[node name="Top" type="Sprite2D" parent="TopPipe"]
+position = Vector2(0, -150)
+texture = ExtResource("2_c66uf")
+
+[node name="BottomPipe" type="Node2D" parent="."]
+position = Vector2(0, 400)
+
+[node name="Top" type="Sprite2D" parent="BottomPipe"]
+position = Vector2(0, -150)
+texture = ExtResource("2_c66uf")
+
+[node name="Bottom" type="Sprite2D" parent="BottomPipe"]
+position = Vector2(0, 150)
+texture = ExtResource("2_c66uf")
+flip_v = true
+
+[node name="Killzone" parent="." instance=ExtResource("3_8p0di")]
+
+[node name="Top" type="CollisionShape2D" parent="Killzone"]
+position = Vector2(0, -400)
+shape = SubResource("RectangleShape2D_8x3ej")
+
+[node name="Bottom" type="CollisionShape2D" parent="Killzone"]
+position = Vector2(0, 400)
+shape = SubResource("RectangleShape2D_8x3ej")
+
+[node name="Pointzone" parent="." instance=ExtResource("4_ejsh2")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pointzone"]
+shape = SubResource("SegmentShape2D_8p0di")

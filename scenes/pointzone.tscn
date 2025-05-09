@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://j6bec6nt3p48"]
+
+[ext_resource type="Script" uid="uid://der1pg0y284q0" path="res://scripts/Pointzone.cs" id="1_kpyre"]
+
+[node name="Pointzone" type="Area2D"]
+collision_mask = 2
+script = ExtResource("1_kpyre")
