@@ -21,4 +21,4 @@ To flap `[TAP]` any part of the screen.
 
 ### Linux, macOS, iOS
 
-For Linux, macOS, and iOS, you will have to build it yourself. Assuming you already have Unity, simple clone the repository, open it with Unity and build the game.  
+For Linux, macOS, and iOS, you will have to build it yourself. Assuming you already have Unity, simply clone the repository, open it with Unity and build the game.  
